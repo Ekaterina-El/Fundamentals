@@ -8,18 +8,31 @@
     android:padding="10dp"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:id="@+id/ivPhoto"
+        android:layout_width="270dp"
+        android:layout_height="480dp"
+        android:background="#11333333"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toTopOf="@+id/btnChoosePhoto"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <Button
-        android:id="@+id/btnPermissions"
-        android:layout_width="300dp"
+        android:id="@+id/btnChoosePhoto"
+        android:layout_width="270dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:backgroundTint="#5362B6"
-        android:text="Permissions"
+        android:text="Choose photo"
         android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/ivPhoto" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
