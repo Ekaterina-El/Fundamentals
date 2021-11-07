@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        if (permissions.isNotEmpty()) {
+        if (permissionsToRequest.isNotEmpty()) {
             ActivityCompat.requestPermissions(this, permissionsToRequest.toTypedArray(), 0)
         }
     }
