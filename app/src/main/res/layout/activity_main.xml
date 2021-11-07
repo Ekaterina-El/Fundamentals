@@ -8,42 +8,16 @@
     android:padding="10dp"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/btnDialog1"
-        android:layout_width="270dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#5362B6"
-        android:text="Dialog 1"
-        android:textAllCaps="false"
-        app:layout_constraintBottom_toTopOf="@+id/btnDialog2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/btnDialog2"
-        android:layout_width="270dp"
+    <Spinner
+        android:id="@+id/spMonths"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="#5362B6"
-        android:text="Dialog 2"
-        android:textAllCaps="false"
-        app:layout_constraintBottom_toTopOf="@+id/btnDialog3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnDialog1" />
-
-    <Button
-        android:id="@+id/btnDialog3"
-        android:layout_width="270dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#5362B6"
-        android:text="Dialog 3"
-        android:textAllCaps="false"
+        android:entries="@array/months"
+        android:spinnerMode="dropdown"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnDialog2" />
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
