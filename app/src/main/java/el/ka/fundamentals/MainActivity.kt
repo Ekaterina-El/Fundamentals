@@ -1,22 +1,25 @@
 package el.ka.fundamentals
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import el.ka.fundamentals.model.Person
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.custom_toast.*
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        showToast.setOnClickListener {
-            Toast(this).apply {
-                duration = Toast.LENGTH_SHORT
-                view = layoutInflater.inflate(R.layout.custom_toast, clToast)
-                show()
+        btnApply.setOnClickListener {
+            val name = etName.text.toString()
+            val age = etAge.text.toString().toInt()
+            val country = etCountry.text.toString()
+            val person = Person(name, age, country)
+
+            Intent(this, SecondActivity::class.java).also {
+                it.putExtra("person_info", person)
+                startActivity(it)
             }
         }
     }
