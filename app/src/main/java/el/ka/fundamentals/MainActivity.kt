@@ -9,48 +9,43 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import kotlinx.android.synthetic.main.activity_main.*
 
+val permissions = arrayOf(
+    Manifest.permission.ACCESS_COARSE_LOCATION,
+    Manifest.permission.WRITE_EXTERNAL_STORAGE
+)
+
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        btnPermissions.setOnClickListener {
-            getPermissions()
-        }
-
-        if (hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION) ||
-            hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) ||
-            hasPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
-        ) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                btnPermissions.setBackgroundColor(getColor(R.color.ok))
-            }
+        btnPermissions.setOnClickListener { getPermissions() }
+        if (hasPermissions(permissions)) {
+            setOkBtn()
         } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                btnPermissions.setBackgroundColor(getColor(R.color.danger))
-            }
+            setFailedBtn()
         }
     }
 
+    private fun hasPermissions(permissions: Array<String>): Boolean {
+        for (permission in permissions) {
+            if (!hasPermission(permission)) return false
+        }
+        return true
+    }
+
     private fun getPermissions() {
-        val permissions = mutableListOf<String>()
+        val permissionsToRequest = mutableListOf<String>()
 
-        if (!hasPermission(Manifest.permission.ACCESS_COARSE_LOCATION)) {
-            permissions.add(Manifest.permission.ACCESS_COARSE_LOCATION)
-        }
+        for (permission in permissions) {
+            if (!hasPermission(permission)) {
+                permissionsToRequest.add(permission)
 
-        if (!hasPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        }
-
-        if (!hasPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION)) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                permissions.add(Manifest.permission.ACCESS_BACKGROUND_LOCATION)
             }
         }
 
         if (permissions.isNotEmpty()) {
-            ActivityCompat.requestPermissions(this, permissions.toTypedArray(), 0)
+            ActivityCompat.requestPermissions(this, permissionsToRequest.toTypedArray(), 0)
         }
     }
 
@@ -67,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == 0 && grantResults.isNotEmpty()) {
             var countOfGranted = 0
             for (i in grantResults.indices) {
-                if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                if (hasPermission(permissions[i])) {
                     countOfGranted += 1
                     Log.d("Permissions", "${permissions[i]}: OK")
                 } else {
@@ -76,11 +71,21 @@ class MainActivity : AppCompatActivity() {
             }
 
             if (countOfGranted == permissions.size) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    btnPermissions.setBackgroundColor(getColor(R.color.ok))
-                }
+                setOkBtn()
             }
         }
 
+    }
+
+    private fun setOkBtn() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            btnPermissions.setBackgroundColor(getColor(R.color.ok))
+        }
+    }
+
+    private fun setFailedBtn() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            btnPermissions.setBackgroundColor(getColor(R.color.danger))
+        }
     }
 }
