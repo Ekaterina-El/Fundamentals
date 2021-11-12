@@ -2,49 +2,33 @@ package el.ka.fundamentals
 
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.viewpager2.widget.ViewPager2
 import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
-    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val firstFragment = FirstFragment()
-        val secondFragment = SecondFragment()
-        val thirdFragment = ThirdFragment()
+        val images = listOf<Int>(
+            R.drawable.kermit1,
+            R.drawable.kermit2,
+            R.drawable.kermit3,
+            R.drawable.kermit4
+        )
 
-        changeFragment(firstFragment)
+        val adapter = ViewPagerAdapter(images)
+        viewPage.adapter = adapter
 
-        bottomNavigationView.setOnItemSelectedListener { menuItem ->
-            when(menuItem.itemId) {
-                R.id.mbHome -> changeFragment(firstFragment, true)
-                R.id.mbMessage -> changeFragment(secondFragment, true)
-                R.id.mbProfile -> changeFragment(thirdFragment, true)
-            }
-            true
-        }
+        viewPage.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
-        bottomNavigationView.getOrCreateBadge(R.id.mbMessage).apply {
-            number = 3
-            isVisible = true
-            backgroundColor = getColor(R.color.danger)
-        }
+//        viewPage.beginFakeDrag()
+//        viewPage.fakeDragBy(100f)
+//        viewPage.endFakeDrag()
     }
-
-    private fun changeFragment(fragment: Fragment, addToBack: Boolean = false) {
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.flFragment, fragment)
-            if (addToBack) {
-                addToBackStack(null)
-            }
-            commit()
-        }
-    }
-
-
 }
