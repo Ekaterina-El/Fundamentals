@@ -1,43 +1,48 @@
 package el.ka.fundamentals
 
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.MenuItem
-import android.widget.Toast
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_main.*
 
+const val spFile = "spFile"
 
 class MainActivity : AppCompatActivity() {
-
-    lateinit var toggle: ActionBarDrawerToggle
+    lateinit var editSP: SharedPreferences.Editor
+    lateinit var sp: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        toggle = ActionBarDrawerToggle(this, drawLayout, R.string.open, R.string.close)
-        drawLayout.addDrawerListener(toggle)
-        toggle.syncState()
+        sp = getSharedPreferences(spFile, MODE_PRIVATE)
+        editSP = sp.edit()
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        nav_menu.setNavigationItemSelectedListener {
-            when (it.itemId) {
-                R.id.item1 -> Toast.makeText(applicationContext, "Clicked item #1", Toast.LENGTH_SHORT).show()
-                R.id.item2 -> Toast.makeText(applicationContext, "Clicked item #2", Toast.LENGTH_SHORT).show()
-                R.id.item3 -> Toast.makeText(applicationContext, "Clicked item #3", Toast.LENGTH_SHORT).show()
-            }
-            true
+        save.setOnClickListener {
+            saveSP()
+        }
+
+        load.setOnClickListener {
+            loadSP()
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (toggle.onOptionsItemSelected(item)) {
-            return true
+    private fun loadSP() {
+        et_name.setText(sp.getString("name", "empty"))
+        et_age.setText(sp.getInt("age", 0).toString())
+        is_adult.isChecked = sp.getBoolean("isAdult", false)
+    }
+
+    private fun saveSP() {
+        val name = et_name.text.toString()
+        val age = et_age.text.toString().toInt()
+        val isAdult = is_adult.isChecked
+
+        editSP.apply {
+            putString("name", name)
+            putInt("age", age)
+            putBoolean("isAdult", isAdult)
+            apply()
         }
-        return false
     }
 }
