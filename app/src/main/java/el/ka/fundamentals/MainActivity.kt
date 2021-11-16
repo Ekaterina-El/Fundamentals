@@ -1,7 +1,9 @@
 package el.ka.fundamentals
 
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Toast
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
@@ -10,39 +12,32 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var toggle: ActionBarDrawerToggle
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val images = listOf<Int>(
-            R.drawable.kermit1,
-            R.drawable.kermit2,
-            R.drawable.kermit3,
-            R.drawable.kermit4
-        )
+        toggle = ActionBarDrawerToggle(this, drawLayout, R.string.open, R.string.close)
+        drawLayout.addDrawerListener(toggle)
+        toggle.syncState()
 
-        val adapter = ViewPagerAdapter(images)
-        viewPage.adapter = adapter
-
-        viewPage.orientation = ViewPager2.ORIENTATION_HORIZONTAL
-
-        TabLayoutMediator(tabLayout, viewPage) { tab, position ->
-            tab.text = "Tab $position"
-        }.attach()
-
-        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                Toast.makeText(this@MainActivity, "Selected: ${tab!!.text}", Toast.LENGTH_SHORT)
-                    .show()
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        nav_menu.setNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.item1 -> Toast.makeText(applicationContext, "Clicked item #1", Toast.LENGTH_SHORT).show()
+                R.id.item2 -> Toast.makeText(applicationContext, "Clicked item #2", Toast.LENGTH_SHORT).show()
+                R.id.item3 -> Toast.makeText(applicationContext, "Clicked item #3", Toast.LENGTH_SHORT).show()
             }
+            true
+        }
+    }
 
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-            }
-
-        })
-
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (toggle.onOptionsItemSelected(item)) {
+            return true
+        }
+        return false
     }
 }
