@@ -27,12 +27,13 @@ class MainActivity : AppCompatActivity() {
         viewPage.orientation = ViewPager2.ORIENTATION_HORIZONTAL
 
         TabLayoutMediator(tabLayout, viewPage) { tab, position ->
-            tab.text = "Page ${position + 1}"
+            tab.text = "Tab $position"
         }.attach()
 
-        tabLayout.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                Toast.makeText(this@MainActivity, "Selected ${tab!!.text}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@MainActivity, "Selected: ${tab!!.text}", Toast.LENGTH_SHORT)
+                    .show()
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
@@ -42,5 +43,6 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+
     }
 }
